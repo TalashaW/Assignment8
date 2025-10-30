@@ -116,3 +116,9 @@ async def divide_route(operation: OperationRequest):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
+@app.get("/health")
+async def health_check():
+    """
+    Health check endpoint for Docker and load balancers.
+    """
+    return {"status": "healthy"}
