@@ -1,5 +1,6 @@
 # app/operations.py
-
+from typing import Union
+import logging
 """
 Module: operations.py
 
@@ -17,6 +18,7 @@ Usage:
 These functions can be imported and used in other modules or integrated into APIs
 to perform arithmetic operations based on user input.
 """
+logger = logging.getLogger(__name__)
 
 from typing import Union  # Import Union for type hinting multiple possible types
 
@@ -41,7 +43,9 @@ def add(a: Number, b: Number) -> Number:
     5.5
     """
     # Perform addition of a and b
+    logger.debug(f"add() called with a={a}, b={b}")
     result = a + b
+    logger.info(f"Add result: {result}")
     return result
 
 def subtract(a: Number, b: Number) -> Number:
@@ -62,7 +66,9 @@ def subtract(a: Number, b: Number) -> Number:
     3.5
     """
     # Perform subtraction of b from a
+    logger.debug(f"subtract() called with a={a}, b={b}")
     result = a - b
+    logger.debug(f"Subtract result: {result}")
     return result
 
 def multiply(a: Number, b: Number) -> Number:
@@ -83,7 +89,9 @@ def multiply(a: Number, b: Number) -> Number:
     10.0
     """
     # Perform multiplication of a and b
+    logger.debug(f"multiply() called with a={a}, b={b}")
     result = a * b
+    logger.info(f"Multiplication: {a} * {b} = {result}")
     return result
 
 def divide(a: Number, b: Number) -> float:
@@ -111,10 +119,13 @@ def divide(a: Number, b: Number) -> float:
     ValueError: Cannot divide by zero!
     """
     # Check if the divisor is zero to prevent division by zero
+    logger.debug(f"divide() called with a={a}, b={b}")
     if b == 0:
         # Raise a ValueError with a descriptive message
+        logger.error(f"Division by zero attempted: {a} / {b}")
         raise ValueError("Cannot divide by zero!")
     
     # Perform division of a by b and return the result as a float
     result = a / b
+    logger.info(f"Division: {a} / {b} = {result}")
     return result

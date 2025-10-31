@@ -8,9 +8,21 @@ from fastapi.exceptions import RequestValidationError
 from app.operations import add, subtract, multiply, divide  # Ensure correct import path
 import uvicorn
 import logging
+import logging.handlers
+import os
 
+
+os.makedirs("logs", exist_ok=True)
 # Setup logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.handlers.RotatingFileHandler('logs/app.log', maxBytes=10*1024*1024, backupCount=5)
+    ]
+)
+
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
@@ -64,10 +76,11 @@ async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/add", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
-async def add_route(operation: OperationRequest):
+async def add_route(operation: OperationRequest, request: Request):
     """
     Add two numbers.
     """
+    logger.info(f"Addition: {operation.a} + {operation.b} from {request.client.host}")
     try:
         result = add(operation.a, operation.b)
         return OperationResponse(result=result)
@@ -76,10 +89,11 @@ async def add_route(operation: OperationRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/subtract", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
-async def subtract_route(operation: OperationRequest):
+async def subtract_route(operation: OperationRequest, request: Request):
     """
     Subtract two numbers.
     """
+    logger.info(f"Subtraction: {operation.a} - {operation.b} from {request.client.host}")
     try:
         result = subtract(operation.a, operation.b)
         return OperationResponse(result=result)
@@ -88,10 +102,11 @@ async def subtract_route(operation: OperationRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/multiply", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
-async def multiply_route(operation: OperationRequest):
+async def multiply_route(operation: OperationRequest, request: Request):
     """
     Multiply two numbers.
     """
+    logger.info(f"Multiplication: {operation.a} * {operation.b} from {request.client.host}")
     try:
         result = multiply(operation.a, operation.b)
         return OperationResponse(result=result)
@@ -100,10 +115,11 @@ async def multiply_route(operation: OperationRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/divide", response_model=OperationResponse, responses={400: {"model": ErrorResponse}})
-async def divide_route(operation: OperationRequest):
+async def divide_route(operation: OperationRequest, request: Request):
     """
     Divide two numbers.
     """
+    logger.info(f"Division: {operation.a} / {operation.b} from {request.client.host}")
     try:
         result = divide(operation.a, operation.b)
         return OperationResponse(result=result)
@@ -114,11 +130,12 @@ async def divide_route(operation: OperationRequest):
         logger.error(f"Divide Operation Internal Error: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
 @app.get("/health")
 async def health_check():
     """
     Health check endpoint for Docker and load balancers.
     """
     return {"status": "healthy"}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)

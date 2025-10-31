@@ -1,7 +1,8 @@
+#tests/test_calculator.py
 import pytest  # Import the pytest framework for writing and running tests
 from typing import Union  # Import Union for type hinting multiple possible types
 from app.operations import add, subtract, multiply, divide   # Import the Operations class from the operations module
-
+import logging
 Num = Union[int, float]
 
 
@@ -24,11 +25,12 @@ Num = Union[int, float]
         "add_negative_float_and_positive_float",
     ]
 )
-def test_addition(a: Num, b: Num, expected: Num) -> None:
-    result = add(a, b)
+def test_addition(a: Num, b: Num, expected: Num, log) -> None:
+    with log.at_level(logging.INFO):
+        result = add(a, b)
     
-    assert result == expected, f"Expected addition({a}, {b}) to be {expected}, but got {result}"
-
+        assert result == expected, f"Expected addition({a}, {b}) to be {expected}, but got {result}"
+        assert any("Add result" in record.message for record in log.records)
 # ---------------------------------------------
 # Unit Tests for the 'subtraction' Method
 # ---------------------------------------------
@@ -54,9 +56,10 @@ def test_addition(a: Num, b: Num, expected: Num) -> None:
         "subtract_two_negative_floats",
     ]
 )
-def test_subtraction(a: Num, b: Num, expected: Num) -> None:
-    result = subtract(a, b)
-    assert result == expected, f"Expected subtraction({a}, {b}) to be {expected}, but got {result}"
+def test_subtraction(a: Num, b: Num, expected: Num, log) -> None:
+    with log.at_level(logging.DEBUG):
+        result = subtract(a, b)
+        assert result == expected, f"Expected subtraction({a}, {b}) to be {expected}, but got {result}"
 
 @pytest.mark.parametrize(
     "a, b, expected",
@@ -77,9 +80,10 @@ def test_subtraction(a: Num, b: Num, expected: Num) -> None:
         "multiply_negative_float_with_positive_float",
     ]
 )
-def test_multiplication(a: Num, b: Num, expected: Num) -> None:
-    result = multiply(a, b)
-    assert result == expected, f"Expected multiplication({a}, {b}) to be {expected}, but got {result}"
+def test_multiplication(a: Num, b: Num, expected: Num, log) -> None:
+    with log.at_level(logging.DEBUG):
+        result = multiply(a, b)
+        assert result == expected, f"Expected multiplication({a}, {b}) to be {expected}, but got {result}"
 
 @pytest.mark.parametrize(
     "a, b, expected",
@@ -98,10 +102,11 @@ def test_multiplication(a: Num, b: Num, expected: Num) -> None:
         "divide_zero_by_positive_integer",
     ]
 )
-def test_division(a: Num, b: Num, expected: float) -> None:
-    result = divide(a, b)
+def test_division(a: Num, b: Num, expected: float, log) -> None:
+    with log.at_level(logging.DEBUG):
+        result = divide(a, b)
     
-    assert result == expected, f"Expected division({a}, {b}) to be {expected}, but got {result}"
+        assert result == expected, f"Expected division({a}, {b}) to be {expected}, but got {result}"
 
 
 @pytest.mark.parametrize(
@@ -117,13 +122,14 @@ def test_division(a: Num, b: Num, expected: float) -> None:
         "divide_zero_by_zero",
     ]
 )
-def test_division_by_zero(a: Num, b: Num) -> None:
+def test_division_by_zero(a: Num, b: Num, log) -> None:
+    with log.at_level(logging.DEBUG):
+        with pytest.raises(ValueError, match="Cannot divide by zero!") as excinfo:
+         # Attempt to divide 'a' by 'b', which should raise a ValueError
+            divide(a, b)
 
-    with pytest.raises(ValueError, match="Cannot divide by zero!") as excinfo:
-        # Attempt to divide 'a' by 'b', which should raise a ValueError
-        divide(a, b)
-    
     # Assert that the exception message contains the expected error message
-    assert "Cannot divide by zero!" in str(excinfo.value), \
-        f"Expected error message 'Cannot divide by zero!', but got '{excinfo.value}'"
+        assert "Cannot divide by zero!" in str(excinfo.value), \
+            f"Expected error message 'Cannot divide by zero!', but got '{excinfo.value}'"
 
+        assert any("Division by zero attempted" in record.message for record in log.records)
