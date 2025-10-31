@@ -1,6 +1,10 @@
-# 📦 Project Setup
+# FastAPI Calculator with Testing & CI/CD
 
+A comprehensive, tested FastAPI application that performs arithmetic operations with automated testing, logging, and continuous integration via GitHub Actions.
 ---
+
+# Overview
+This project demonstrates modern software development practices by implementing a web-based calculator with a complete testing suite. It includes unit tests, integration tests, end-to-end tests, comprehensive logging, and automated CI/CD pipeline using GitHub Actions.
 
 # 🧩 1. Install Homebrew (Mac Only)
 
@@ -122,8 +126,8 @@ You should see a success message.
 Now you can safely clone the course project:
 
 ```bash
-git clone <repository-url>
-cd <repository-directory>
+git https://github.com/TalashaW/Assignment8
+cd https://github.com/TalashaW/Assignment8
 ```
 
 ---
@@ -155,77 +159,49 @@ python --version
 
 ---
 
-## Create and Activate a Virtual Environment
-
-(Optional but recommended)
-
-```bash
-python3 -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate.bat  # Windows
-```
-
 ### Install Required Packages
 
 ```bash
 pip install -r requirements.txt
 ```
+**Dependencies:**
+- fastapi - Web framework
+- uvicorn - ASGI server
+- python-dotenv - Environment variable management
+- pytest - Testing framework
+- pytest-playwright - E2E testing
+- pytest-cov - Code coverage
+- jinja2 - Template engine
 
+##Install Playwright browsers(for e2e tests):
+playwright install
 ---
 
-# 🐳 5. (Optional) Docker Setup
 
-> Skip if Docker isn't used in this module.
-
-## Install Docker
-
-- [Install Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
-- [Install Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
-
-## Build Docker Image
-
-```bash
-docker build -t <image-name> .
+# 🚀 5. Running the Project
 ```
+The application will be available at: http://localhost:8000
+Features Available:
 
-## Run Docker Container
+Homepage: http://localhost:8000 - Calculator interface
+API Endpoints:
 
-```bash
-docker run -it --rm <image-name>
+POST /add - Addition
+POST /subtract - Subtraction
+POST /multiply - Multiplication
+POST /divide - Division
+
+**Example API Usage:
+
+curl -X POST "http://localhost:8000/add" \
+  -H "Content-Type: application/json" \
+  -d '{"a": 10, "b": 5}'
+
+**Response
+  {
+  "result": 15
+}
 ```
-
----
-
-# 🚀 6. Running the Project
-
-- **Without Docker**:
-
-```bash
-python main.py
-```
-
-(or update this if the main script is different.)
-
-- **With Docker**:
-
-```bash
-docker run -it --rm <image-name>
-```
-
----
-
-# 📝 7. Submission Instructions
-
-After finishing your work:
-
-```bash
-git add .
-git commit -m "Complete Module X"
-git push origin main
-```
-
-Then submit the GitHub repository link as instructed.
-
 ---
 
 # 🔥 Useful Commands Cheat Sheet

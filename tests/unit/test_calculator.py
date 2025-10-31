@@ -4,8 +4,22 @@ from typing import Union  # Import Union for type hinting multiple possible type
 from app.operations import add, subtract, multiply, divide   # Import the Operations class from the operations module
 import logging
 Num = Union[int, float]
+"""
+Unit tests for the app/operations.py module using pytest
 
+This test suite covers arithmetic operations (addition, subtraction, multiplication,
+and division) with comprehensive test cases for various input types and edge cases.
+It ensures that calculations execute correctly, logging is properly implemented,
+and error handling (division by zero) behaves as expected.
 
+Test Coverage:
+    - Positive and negative integers
+    - Floating-point numbers
+    - Zero values
+    - Mixed sign operations
+    - Error conditions (division by zero)
+
+"""
 @pytest.mark.parametrize(
     "a, b, expected",
     [
@@ -25,12 +39,12 @@ Num = Union[int, float]
         "add_negative_float_and_positive_float",
     ]
 )
-def test_addition(a: Num, b: Num, expected: Num, log) -> None:
-    with log.at_level(logging.INFO):
+def test_addition(a: Num, b: Num, expected: Num, caplog) -> None:
+    with caplog.at_level(logging.INFO):
         result = add(a, b)
     
         assert result == expected, f"Expected addition({a}, {b}) to be {expected}, but got {result}"
-        assert any("Add result" in record.message for record in log.records)
+        assert any("Add result" in record.message for record in caplog.records)
 # ---------------------------------------------
 # Unit Tests for the 'subtraction' Method
 # ---------------------------------------------
@@ -56,8 +70,8 @@ def test_addition(a: Num, b: Num, expected: Num, log) -> None:
         "subtract_two_negative_floats",
     ]
 )
-def test_subtraction(a: Num, b: Num, expected: Num, log) -> None:
-    with log.at_level(logging.DEBUG):
+def test_subtraction(a: Num, b: Num, expected: Num, caplog) -> None:
+    with caplog.at_level(logging.DEBUG):
         result = subtract(a, b)
         assert result == expected, f"Expected subtraction({a}, {b}) to be {expected}, but got {result}"
 
@@ -80,8 +94,8 @@ def test_subtraction(a: Num, b: Num, expected: Num, log) -> None:
         "multiply_negative_float_with_positive_float",
     ]
 )
-def test_multiplication(a: Num, b: Num, expected: Num, log) -> None:
-    with log.at_level(logging.DEBUG):
+def test_multiplication(a: Num, b: Num, expected: Num, caplog) -> None:
+    with caplog.at_level(logging.DEBUG):
         result = multiply(a, b)
         assert result == expected, f"Expected multiplication({a}, {b}) to be {expected}, but got {result}"
 
@@ -102,8 +116,8 @@ def test_multiplication(a: Num, b: Num, expected: Num, log) -> None:
         "divide_zero_by_positive_integer",
     ]
 )
-def test_division(a: Num, b: Num, expected: float, log) -> None:
-    with log.at_level(logging.DEBUG):
+def test_division(a: Num, b: Num, expected: float, caplog) -> None:
+    with caplog.at_level(logging.DEBUG):
         result = divide(a, b)
     
         assert result == expected, f"Expected division({a}, {b}) to be {expected}, but got {result}"
@@ -122,8 +136,8 @@ def test_division(a: Num, b: Num, expected: float, log) -> None:
         "divide_zero_by_zero",
     ]
 )
-def test_division_by_zero(a: Num, b: Num, log) -> None:
-    with log.at_level(logging.DEBUG):
+def test_division_by_zero(a: Num, b: Num, caplog) -> None:
+    with caplog.at_level(logging.DEBUG):
         with pytest.raises(ValueError, match="Cannot divide by zero!") as excinfo:
          # Attempt to divide 'a' by 'b', which should raise a ValueError
             divide(a, b)
@@ -132,4 +146,4 @@ def test_division_by_zero(a: Num, b: Num, log) -> None:
         assert "Cannot divide by zero!" in str(excinfo.value), \
             f"Expected error message 'Cannot divide by zero!', but got '{excinfo.value}'"
 
-        assert any("Division by zero attempted" in record.message for record in log.records)
+        assert any("Division by zero attempted" in record.message for record in caplog.records)

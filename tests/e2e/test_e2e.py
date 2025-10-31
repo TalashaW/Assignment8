@@ -1,5 +1,18 @@
 # tests/e2e/test_e2e.py
 
+"""
+End-to-End (E2E) Tests for FastAPI Calculator Application
+
+This module contains E2E tests that verify the complete functionality of the calculator
+application from the user's perspective. These tests use Playwright to automate browser
+interactions and ensure that the frontend correctly communicates with the backend API.
+
+These tests cover
+    - Basic rendering: Verifies that pages load and display correctly
+    - Calculator operations: Tests arithmetic operations (addition, subtraction, etc.)
+    - Error handling: Ensures invalid operations are handled gracefully
+
+"""
 import pytest  # Import the pytest framework for writing and running tests
 
 # The following decorators and functions define E2E tests for the FastAPI calculator application.

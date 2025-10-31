@@ -1,5 +1,15 @@
 # tests/integration/test_fastapi_calculator.py
 
+"""
+Integration Tests for FastAPI Calculator Application
+
+This module contains integration tests that verify the correct interaction between
+the FastAPI application endpoints and the underlying calculator business logic.
+These tests use FastAPI's TestClient to simulate HTTP requests without running
+a live server, ensuring that the API routes, request validation, error handling,
+and response formatting work correctly together.
+"""
+
 import pytest  # Import the pytest framework for writing and running tests
 from fastapi.testclient import TestClient  # Import TestClient for simulating API requests
 from main import app  # Import the FastAPI app instance from your main application file
@@ -240,7 +250,6 @@ def test_multiply_invalid_type(client):
     Test Multiplication Endpoint with Invalid Data Type.
 
     This test verifies that the `/multiply` endpoint correctly handles requests with invalid data types.
-    This covers lines 52-54 in main.py: validation_exception_handler
 
     Steps:
     1. Send a POST request to the `/multiply` endpoint with 'a' as a string instead of a number.

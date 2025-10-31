@@ -1,10 +1,31 @@
 # tests/conftest.py
+"""
+Module: conftest.py
+
+This module contains pytest fixtures for End-to-End (E2E) testing of the FastAPI
+calculator application using Playwright for browser automation.
+
+Fixtures provided:
+- fastapi_server: Starts and manages the FastAPI server for E2E tests
+- playwright_instance_fixture: Manages Playwright's lifecycle
+- browser: Provides a Chromium browser instance for tests
+- page: Creates a new browser page for each test function
+
+These fixtures enable automated browser testing by:
+- Starting the FastAPI server in a subprocess
+- Waiting for the server to be ready (polling with timeout)
+- Launching a headless Chromium browser
+- Creating isolated browser pages for each test
+- Cleaning up resources after test completion
+"""
 
 import subprocess
 import time
 import pytest
 from playwright.sync_api import sync_playwright
 import requests
+
+
 
 @pytest.fixture(scope='session')
 def fastapi_server():

@@ -11,3 +11,9 @@
 2025-10-30 21:40:41,249 - app.operations - INFO - Multiplication: 5.0 * 2.0 = 10.0
 2025-10-30 21:40:42,648 - __main__ - INFO - Multiplication: 5.0 / 2.0 from 127.0.0.1
 2025-10-30 21:40:42,649 - app.operations - INFO - Division: 5.0 / 2.0 = 2.5
+2025-10-30 21:46:03,955 - __main__ - INFO - Addition: 10.0 + 5.0 from 127.0.0.1
+2025-10-30 21:46:03,956 - app.operations - INFO - Add result: 15.0
+2025-10-30 21:46:04,612 - __main__ - INFO - Division: 10.0 / 0.0 from 127.0.0.1
+2025-10-30 21:46:04,613 - app.operations - ERROR - Division by zero attempted: 10.0 / 0.0
+2025-10-30 21:46:04,613 - __main__ - ERROR - Divide Operation Error: Cannot divide by zero!
+2025-10-30 21:46:04,613 - __main__ - ERROR - HTTPException on /divide: Cannot divide by zero!
